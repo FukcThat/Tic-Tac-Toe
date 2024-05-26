@@ -1,6 +1,6 @@
 const gameBoard = (() => {
   let board = [
-    [" ", " ", " "],
+    [" ", "x", " "],
     [" ", " ", " "],
     [" ", " ", " "],
   ];
@@ -21,7 +21,7 @@ const gameBoard = (() => {
     });
   };
 
-  return { board, makeMove, printBoard };
+  return { getCurrentBoard, makeMove, printBoard };
 })();
 
 const player = (name, marker) => {
@@ -39,8 +39,11 @@ const gameController = (() => {
   const playRound = (row, col) => {
     if (gameBoard.makeMove(row, col, currentPlayer.marker)) {
       gameBoard.printBoard();
-      if (checkWinenr(currentPlayer.marker)) {
+      if (checkWinner(currentPlayer.marker)) {
         console.log(`${currentPlayer.name} wins!`);
+        return;
+      } else if (checkTie()) {
+        console.log("Unpleasasnt. A Tie.");
         return;
       }
       switchPlayer();
@@ -48,7 +51,18 @@ const gameController = (() => {
       console.log("That's illegal. Try again.");
     }
   };
-  const checkWinenr = (playerMarker) => {
+
+  const checkTie = () => {
+    gameBoard.getCurrentBoard().forEach((row) => {
+      row.forEach((cell) => {
+        console.log(cell);
+        if ((cell = " ")) return true;
+      });
+    });
+    return false;
+  };
+
+  const checkWinner = (playerMarker) => {
     const board = gameBoard.getCurrentBoard();
     const winConditions = [
       [board[0][0], board[0][1], board[0][2]],
@@ -66,12 +80,7 @@ const gameController = (() => {
     );
   };
 
-  return { playRound, getCurrentPlayer: () => currentPlayer };
+  return { playRound, getCurrentPlayer: () => currentPlayer, checkTie };
 })();
 
-gameBoard.printBoard();
-gameController.playRound(0, 0);
-gameController.playRound(0, 1);
-gameController.playRound(1, 0);
-gameController.playRound(1, 1);
-gameController.playRound(2, 0);
+console.log(gameController.checkTie());
