@@ -1,10 +1,12 @@
+// Make Board Foundation
 const gameBoard = (() => {
   let board = [
     [" ", "x", " "],
-    [" ", " ", " "],
-    [" ", " ", " "],
+    [" ", "o", " "],
+    [" ", "x", " "],
   ];
 
+  //Make sure things can't get fucked when changing stuff
   const getCurrentBoard = () => board;
 
   const makeMove = (row, col, playerMarker) => {
@@ -53,13 +55,13 @@ const gameController = (() => {
   };
 
   const checkTie = () => {
+    let isTie = true;
     gameBoard.getCurrentBoard().forEach((row) => {
       row.forEach((cell) => {
-        console.log(cell);
-        if ((cell = " ")) return true;
+        if (cell == " ") isTie = false;
       });
     });
-    return false;
+    return isTie;
   };
 
   const checkWinner = (playerMarker) => {
@@ -84,3 +86,24 @@ const gameController = (() => {
 })();
 
 console.log(gameController.checkTie());
+
+const userInterface = (() => {
+  const drawBoard = (currentBoard) => {
+    const boardContainer = document.getElementById("drawnBoard");
+
+    currentBoard.forEach((row) => {
+      const rowBoi = document.createElement("div");
+      rowBoi.classList.add("row");
+      row.forEach((cell) => {
+        const cellBoi = document.createElement("div");
+        cellBoi.classList.add("cell");
+        cellBoi.classList.add(cell == " " ? "none" : cell);
+        rowBoi.appendChild(cellBoi);
+      });
+      boardContainer.appendChild(rowBoi);
+    });
+  };
+  return { drawBoard };
+})();
+
+userInterface.drawBoard(gameBoard.getCurrentBoard());

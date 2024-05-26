@@ -1,0 +1,42 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#drawnBoard {
+    height: 40rem;
+    width: 40rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.row {
+    height: 33%;
+    width: 100%;
+    display: flex;
+}
+
+.cell {
+    height: 100%;
+    width: 33%;
+    border: black 1px solid;
+}
+
+.x {
+    background-image: url("./Images/tic-tac-toe.png");
+    background-position: center;
+    background-size: cover;
+}
+
+.o {
+    background-image: url("./Images/tic-tac-toe-faivon.png");
+    background-position: center;
+    background-size: cover;
+}
