@@ -1,9 +1,9 @@
 // Make Board Foundation
 const gameBoard = (() => {
   let board = [
-    [" ", "x", " "],
-    [" ", "o", " "],
-    [" ", "x", " "],
+    [" ", " ", " "],
+    [" ", " ", " "],
+    [" ", " ", " "],
   ];
 
   //Make sure things can't get fucked when changing stuff
@@ -38,9 +38,11 @@ const gameController = (() => {
   const switchPlayer = () => {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
   };
+
   const playRound = (row, col) => {
     if (gameBoard.makeMove(row, col, currentPlayer.marker)) {
       gameBoard.printBoard();
+      userInterface.drawBoard(gameBoard.getCurrentBoard());
       if (checkWinner(currentPlayer.marker)) {
         console.log(`${currentPlayer.name} wins!`);
         return;
@@ -85,22 +87,41 @@ const gameController = (() => {
   return { playRound, getCurrentPlayer: () => currentPlayer, checkTie };
 })();
 
-console.log(gameController.checkTie());
-
 const userInterface = (() => {
-  const drawBoard = (currentBoard) => {
-    const boardContainer = document.getElementById("drawnBoard");
+  // Helper
 
-    currentBoard.forEach((row) => {
-      const rowBoi = document.createElement("div");
-      rowBoi.classList.add("row");
-      row.forEach((cell) => {
-        const cellBoi = document.createElement("div");
-        cellBoi.classList.add("cell");
-        cellBoi.classList.add(cell == " " ? "none" : cell);
-        rowBoi.appendChild(cellBoi);
-      });
-      boardContainer.appendChild(rowBoi);
+  const createCell = (cell, rowBoi, { row, col }) => {
+    const cellBoi = document.createElement("div");
+    cellBoi.classList.add("cell");
+    cellBoi.classList.add(cell == " " ? "none" : cell);
+    // Onclick Listener
+    cellBoi.addEventListener("click", () => {
+      console.log("click");
+      gameController.playRound(row, col);
+    });
+    rowBoi.appendChild(cellBoi);
+  };
+  const createRow = (row, rowCoord) => {
+    const rowBoi = document.createElement("div");
+    rowBoi.classList.add("row");
+    row.forEach((cell, colCoord) => {
+      //createCell(cell, rowBoi, rowCoord, colCoord);
+      createCell(cell, rowBoi, { row: rowCoord, col: colCoord });
+    });
+    return rowBoi;
+  };
+
+  const clearBoard = () => {
+    const boardContainer = document.getElementById("drawnBoard");
+    boardContainer.innerHTML = "";
+  };
+
+  const drawBoard = (currentBoard) => {
+    clearBoard();
+
+    const boardContainer = document.getElementById("drawnBoard");
+    currentBoard.forEach((row, rowCoord) => {
+      boardContainer.appendChild(createRow(row, rowCoord));
     });
   };
   return { drawBoard };
