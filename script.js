@@ -21,10 +21,8 @@ const gameBoard = (() => {
     });
   };
 
-  return { getCurrentBoard, makeMove, printBoard };
+  return { board, makeMove, printBoard };
 })();
-
-gameBoard.printBoard();
 
 const player = (name, marker) => {
   return { name, marker };
