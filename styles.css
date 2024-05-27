@@ -8,7 +8,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: rgb(85, 85, 85);
 }
+
 
 #drawnBoard {
     height: 40rem;
@@ -21,22 +23,74 @@ body {
     height: 33%;
     width: 100%;
     display: flex;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .cell {
-    height: 100%;
-    width: 33%;
-    border: black 1px solid;
+    height: 12rem;
+    width: 12rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: rgb(188, 110, 123) 2px solid;
+    border-radius: 1rem;
+    box-shadow: rgba(73, 20, 29, 0.5) 1px 2px 3px;
+    background-color: pink;
+    transition: height 0.25s, width 0.25s, transform 0.25s;
 }
 
-.x {
-    background-image: url("./Images/tic-tac-toe.png");
-    background-position: center;
-    background-size: cover;
+.cell:hover {
+    height: 12.5rem;
+    width: 12.5rem;
+    cursor: pointer;
+    background-color: rgb(218, 144, 158);
 }
 
-.o {
-    background-image: url("./Images/tic-tac-toe-faivon.png");
-    background-position: center;
-    background-size: cover;
+.cell:active {
+    height: 12rem;
+    width: 12rem;
 }
+
+.x, .o {
+    height: 80%;
+    width: 80%;
+}
+
+#xStroke1, #xStroke2 {
+    stroke-dasharray: 113.13708498984761; 
+    stroke-dashoffset: 113.13708498984761;
+}
+
+#xStroke1 {
+    animation: xStroke1 0.5s ease forwards;
+}
+
+#xStroke2 {
+    animation: xStroke2 0.5s ease forwards 0.5s; 
+}
+
+@keyframes xStroke1 {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes xStroke2 {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.o circle{
+    stroke-dasharray: 282.7433388230814;
+    stroke-dashoffset: 282.7433388230814;
+    animation: oStroke 1s ease forwards;
+}
+
+@keyframes oStroke {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+

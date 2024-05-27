@@ -90,41 +90,114 @@ const gameController = (() => {
 const userInterface = (() => {
   // Helper
 
+  let lastClickedCell = null;
+  let currentBoardState = [];
+
+  const createSVGElement = (svgString) => {
+    const template = document.createElement("template");
+    template.innerHTML = svgString.trim();
+    return template.content.firstChild;
+  };
+
+  const svgX = `
+  <svg class="x" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <path id="xStroke1" d="M10 10L90 90" stroke="white" stroke-width="10" stroke-linecap="round" />
+      <path id="xStroke2" d="M90 10L10 90" stroke="white" stroke-width="10" stroke-linecap="round" />
+    </svg>
+  `;
+
+  const svgO = `
+    <svg class="o" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="50" cy="50" r="45" stroke="white" stroke-width="10" stroke-linecap="round"/>
+    </svg>
+  `;
+
   const createCell = (cell, rowBoi, { row, col }) => {
     const cellBoi = document.createElement("div");
     cellBoi.classList.add("cell");
-    cellBoi.classList.add(cell == " " ? "none" : cell);
+    cellBoi.setAttribute("id", `cell-${row}-${col}`);
+
+    if (cell === "x") {
+      const svgElement = createSVGElement(svgX);
+      cellBoi.appendChild(svgElement);
+    } else if (cell === "o") {
+      const svgElement = createSVGElement(svgO);
+      cellBoi.appendChild(svgElement);
+    }
+
     // Onclick Listener
     cellBoi.addEventListener("click", () => {
       console.log("click");
       gameController.playRound(row, col);
+      lastClickedCell = { row, col };
     });
     rowBoi.appendChild(cellBoi);
   };
+
   const createRow = (row, rowCoord) => {
     const rowBoi = document.createElement("div");
     rowBoi.classList.add("row");
     row.forEach((cell, colCoord) => {
-      //createCell(cell, rowBoi, rowCoord, colCoord);
       createCell(cell, rowBoi, { row: rowCoord, col: colCoord });
     });
     return rowBoi;
   };
 
-  const clearBoard = () => {
-    const boardContainer = document.getElementById("drawnBoard");
-    boardContainer.innerHTML = "";
+  const updateCell = (row, col) => {
+    const cellBoi = document.querySelector(`#cell-${row}-${col}`);
+    const cell = currentBoardState[row][col];
+    cellBoi.innerHTML = "";
+
+    if (cell === "x") {
+      const svgElement = createSVGElement(svgX);
+      svgElement.querySelector("#xStroke1").style.animation =
+        "xStroke1 1s ease forwards";
+      svgElement.querySelector("#xStroke2").style.animation =
+        "oStroke 1s ease forwards";
+      cellBoi.appendChild(svgElement);
+    } else if (cell === "x") {
+      const svgElement = createSVGElement(svgO);
+      svgElement.querySelector("circle").style.animation =
+        "oStroke 1s ease forwards";
+      cellBoi.appendChild(svgElement);
+    }
   };
+
+  // const clearBoard = () => {
+  //   const boardContainer = document.getElementById("drawnBoard");
+  //   boardContainer.innerHTML = "";
+  // };
 
   const drawBoard = (currentBoard) => {
-    clearBoard();
-
     const boardContainer = document.getElementById("drawnBoard");
+    boardContainer.innerHTML = "";
+
+    currentBoardState = currentBoard.map((row) => row.slice());
+
     currentBoard.forEach((row, rowCoord) => {
-      boardContainer.appendChild(createRow(row, rowCoord));
+      const rowBoi = createRow(row, rowCoord);
+      boardContainer.appendChild(rowBoi);
     });
+
+    if (lastClickedCell) {
+      updateCell(lastClickedCell.row, lastClickedCell.col);
+    }
   };
+
   return { drawBoard };
 })();
 
 userInterface.drawBoard(gameBoard.getCurrentBoard());
+
+//   const drawBoard = (currentBoard) => {
+//     clearBoard();
+
+//     const boardContainer = document.getElementById("drawnBoard");
+//     currentBoard.forEach((row, rowCoord) => {
+//       boardContainer.appendChild(createRow(row, rowCoord));
+//     });
+//   };
+//   return { drawBoard };
+// })();
+
+// userInterface.drawBoard(gameBoard.getCurrentBoard());
