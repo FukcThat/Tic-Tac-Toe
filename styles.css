@@ -57,6 +57,17 @@ body {
     width: 80%;
 }
 
+.finishedx {
+    background-image: url(./Images/ex-removebg-preview.png);
+    background-position: center;
+    background-size: contain;
+}
+
+.finishedo {
+    background-image: url(./Images/circo-removebg-preview.png);
+    background-position: center;
+}
+
 #xStroke1, #xStroke2 {
     stroke-dasharray: 113.13708498984761; 
     stroke-dashoffset: 113.13708498984761;
@@ -88,9 +99,10 @@ body {
     animation: oStroke 1s ease forwards;
 }
 
+
+
 @keyframes oStroke {
     to {
         stroke-dashoffset: 0;
     }
 }
-

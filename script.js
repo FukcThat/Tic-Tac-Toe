@@ -31,6 +31,7 @@ const player = (name, marker) => {
 };
 
 const gameController = (() => {
+  let lastClickedCell = { row: null, col: null };
   const player1 = player("Bob", "x");
   const player2 = player("Bobettes", "o");
   let currentPlayer = player1;
@@ -41,8 +42,10 @@ const gameController = (() => {
 
   const playRound = (row, col) => {
     if (gameBoard.makeMove(row, col, currentPlayer.marker)) {
+      lastClickedCell = { row: row, col: col };
+
       gameBoard.printBoard();
-      userInterface.drawBoard(gameBoard.getCurrentBoard());
+      userInterface.drawBoard(gameBoard.getCurrentBoard(), lastClickedCell);
       if (checkWinner(currentPlayer.marker)) {
         console.log(`${currentPlayer.name} wins!`);
         return;
@@ -84,13 +87,16 @@ const gameController = (() => {
     );
   };
 
-  return { playRound, getCurrentPlayer: () => currentPlayer, checkTie };
+  return {
+    playRound,
+    getCurrentPlayer: () => currentPlayer,
+    checkTie,
+    lastClickedCell,
+  };
 })();
 
 const userInterface = (() => {
   // Helper
-
-  let lastClickedCell = null;
 
   const createSVGElement = (svgString) => {
     const template = document.createElement("template");
@@ -111,16 +117,22 @@ const userInterface = (() => {
     </svg>
   `;
 
-  const createCell = (cell, rowBoi, { row, col }) => {
+  const createCell = (cell, rowBoi, { row, col }, lastClickedCell) => {
     const cellBoi = document.createElement("div");
     cellBoi.classList.add("cell");
 
-    if (cell === "x") {
-      const svgElement = createSVGElement(svgX);
-      cellBoi.appendChild(svgElement);
-    } else if (cell === "o") {
-      const svgElement = createSVGElement(svgO);
-      cellBoi.appendChild(svgElement);
+    if (row === lastClickedCell.row && col === lastClickedCell.col) {
+      if (cell === "x") {
+        const svgElement = createSVGElement(svgX);
+        cellBoi.appendChild(svgElement);
+      } else if (cell === "o") {
+        const svgElement = createSVGElement(svgO);
+        cellBoi.appendChild(svgElement);
+      }
+    } else {
+      if (cell !== " ") {
+        cellBoi.classList.add("finished" + cell);
+      }
     }
 
     // Onclick Listener
@@ -131,11 +143,16 @@ const userInterface = (() => {
     rowBoi.appendChild(cellBoi);
   };
 
-  const createRow = (row, rowCoord) => {
+  const createRow = (row, rowCoord, lastClickedCell) => {
     const rowBoi = document.createElement("div");
     rowBoi.classList.add("row");
     row.forEach((cell, colCoord) => {
-      createCell(cell, rowBoi, { row: rowCoord, col: colCoord });
+      createCell(
+        cell,
+        rowBoi,
+        { row: rowCoord, col: colCoord },
+        lastClickedCell
+      );
     });
     return rowBoi;
   };
@@ -145,25 +162,22 @@ const userInterface = (() => {
     boardContainer.innerHTML = "";
   };
 
-  const drawBoard = (currentBoard) => {
+  const drawBoard = (currentBoard, lastClickedCell) => {
+    console.log(lastClickedCell);
     clearBoard();
 
     const boardContainer = document.getElementById("drawnBoard");
 
     currentBoard.forEach((row, rowCoord) => {
-      const rowBoi = createRow(row, rowCoord);
+      const rowBoi = createRow(row, rowCoord, lastClickedCell);
       boardContainer.appendChild(rowBoi);
     });
-
-    if (lastClickedCell) {
-      updateCell(lastClickedCell.row, lastClickedCell.col);
-    }
   };
 
   return { drawBoard };
 })();
 
-userInterface.drawBoard(gameBoard.getCurrentBoard());
+userInterface.drawBoard(gameBoard.getCurrentBoard(), { row: null, col: null });
 
 //   const drawBoard = (currentBoard) => {
 //     clearBoard();
