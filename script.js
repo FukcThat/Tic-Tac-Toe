@@ -91,7 +91,6 @@ const userInterface = (() => {
   // Helper
 
   let lastClickedCell = null;
-  let currentBoardState = [];
 
   const createSVGElement = (svgString) => {
     const template = document.createElement("template");
@@ -115,7 +114,6 @@ const userInterface = (() => {
   const createCell = (cell, rowBoi, { row, col }) => {
     const cellBoi = document.createElement("div");
     cellBoi.classList.add("cell");
-    cellBoi.setAttribute("id", `cell-${row}-${col}`);
 
     if (cell === "x") {
       const svgElement = createSVGElement(svgX);
@@ -129,7 +127,6 @@ const userInterface = (() => {
     cellBoi.addEventListener("click", () => {
       console.log("click");
       gameController.playRound(row, col);
-      lastClickedCell = { row, col };
     });
     rowBoi.appendChild(cellBoi);
   };
@@ -143,36 +140,15 @@ const userInterface = (() => {
     return rowBoi;
   };
 
-  const updateCell = (row, col) => {
-    const cellBoi = document.querySelector(`#cell-${row}-${col}`);
-    const cell = currentBoardState[row][col];
-    cellBoi.innerHTML = "";
-
-    if (cell === "x") {
-      const svgElement = createSVGElement(svgX);
-      svgElement.querySelector("#xStroke1").style.animation =
-        "xStroke1 1s ease forwards";
-      svgElement.querySelector("#xStroke2").style.animation =
-        "oStroke 1s ease forwards";
-      cellBoi.appendChild(svgElement);
-    } else if (cell === "x") {
-      const svgElement = createSVGElement(svgO);
-      svgElement.querySelector("circle").style.animation =
-        "oStroke 1s ease forwards";
-      cellBoi.appendChild(svgElement);
-    }
-  };
-
-  // const clearBoard = () => {
-  //   const boardContainer = document.getElementById("drawnBoard");
-  //   boardContainer.innerHTML = "";
-  // };
-
-  const drawBoard = (currentBoard) => {
+  const clearBoard = () => {
     const boardContainer = document.getElementById("drawnBoard");
     boardContainer.innerHTML = "";
+  };
 
-    currentBoardState = currentBoard.map((row) => row.slice());
+  const drawBoard = (currentBoard) => {
+    clearBoard();
+
+    const boardContainer = document.getElementById("drawnBoard");
 
     currentBoard.forEach((row, rowCoord) => {
       const rowBoi = createRow(row, rowCoord);
