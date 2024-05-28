@@ -60,12 +60,15 @@ body {
 .finishedx {
     background-image: url(./Images/ex-removebg-preview.png);
     background-position: center;
-    background-size: contain;
+    background-repeat: no-repeat;
+    background-size: 72%;
 }
 
 .finishedo {
     background-image: url(./Images/circo-removebg-preview.png);
     background-position: center;
+    background-repeat: no-repeat;
+    background-size: 80%;
 }
 
 #xStroke1, #xStroke2 {
