@@ -10,15 +10,32 @@
   </head>
   <body>
     <section id="HomeScreen">
-      <!-- Title -->
-      <!-- Player Selector Buttons -->
-      <!--  Player 1 Selectors
-              - Name
-              - Marker Coice Buttons -->
-      <!--  Player 2 Selectors
-              - Name
-              - Marker Coice Buttons -->
-      <!-- Play Button -->
+      <div id="mainTitle">Tic-Tac-Toe</div>
+      <div class="cardContainer">
+        <div class="playerCard">
+          <div class="playerTitle">x</div>
+          <input
+            id="p1sNameInput"
+            class="nameInput"
+            type="text"
+            maxlength="25"
+            placeholder="Player Name"
+            required
+          />
+        </div>
+        <div class="playerCard">
+          <div class="playerTitle">o</div>
+          <input
+            id="p2NameInput"
+            class="nameInput"
+            type="text"
+            maxlength="25"
+            placeholder="Other Player Name"
+            required
+          />
+        </div>
+      </div>
+      <button id="playBtn">Play</button>
     </section>
     <section id="GameScreen" class="hidden">
       <!-- Home Button Top left -->
