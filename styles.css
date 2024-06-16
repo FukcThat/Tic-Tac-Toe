@@ -172,4 +172,9 @@ body {
     background-color: pink;
     font-size: 1.25rem;
     color: rgba(73, 20, 29);
+    cursor: pointer;
+}
+
+#playBtn:hover {
+    font-size: 1.5rem;
 }
