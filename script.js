@@ -32,15 +32,23 @@ const player = (name, marker) => {
 
 const gameController = (() => {
   let lastClickedCell = { row: null, col: null };
-  const player1 = player("Bob", "x");
-  const player2 = player("Bobettes", "o");
-  let currentPlayer = player1;
+  let player1 = null;
+  let player2 = null;
+  let currentPlayer = null;
+
+  const init = (player1NameValue, player2NameValue) => {
+    player1 = player(player1NameValue, "x");
+    player2 = player(player2NameValue, "o");
+    currentPlayer = player1;
+  };
 
   const switchPlayer = () => {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
   };
 
   const playRound = (row, col) => {
+    console.log(player1);
+    if (currentPlayer == null) currentPlayer = player1;
     if (gameBoard.makeMove(row, col, currentPlayer.marker)) {
       lastClickedCell = { row: row, col: col };
 
@@ -92,10 +100,38 @@ const gameController = (() => {
     getCurrentPlayer: () => currentPlayer,
     checkTie,
     lastClickedCell,
+    init,
   };
 })();
 
 const userInterface = (() => {
+  const onStartGameBtnClick = () => {
+    // wanna make sure that name inputs are not empty
+    const player1NameInput = document.querySelector("#p1sNameInput");
+    const player2NameInput = document.querySelector("#p2NameInput");
+
+    if (player1NameInput.value == "" && player2NameInput.value == "")
+      return window.alert("Can't you follow instructions? Silly ;)");
+
+    // get the name inputs and set them to be the names of the respective players
+    gameController.init(player1NameInput.value, player2NameInput.value);
+    // hide the manu section
+    const HomeScreenSection = document.querySelector("#HomeScreen");
+    HomeScreenSection.classList.add("hidden");
+    HomeScreenSection.classList.toggle("flex");
+
+    // show the game section
+    const GameScreenSection = document.querySelector("#GameScreen");
+    GameScreenSection.classList.toggle("flex");
+
+    GameScreenSection.classList.toggle("hidden");
+
+    // run the first drawBoard call
+    drawBoard(gameBoard.getCurrentBoard(), {
+      row: null,
+      col: null,
+    });
+  };
   // Helper
 
   const createSVGElement = (svgString) => {
@@ -174,20 +210,9 @@ const userInterface = (() => {
     });
   };
 
-  return { drawBoard };
+  return { onStartGameBtnClick, drawBoard };
 })();
 
-userInterface.drawBoard(gameBoard.getCurrentBoard(), { row: null, col: null });
-
-//   const drawBoard = (currentBoard) => {
-//     clearBoard();
-
-//     const boardContainer = document.getElementById("drawnBoard");
-//     currentBoard.forEach((row, rowCoord) => {
-//       boardContainer.appendChild(createRow(row, rowCoord));
-//     });
-//   };
-//   return { drawBoard };
-// })();
-
-// userInterface.drawBoard(gameBoard.getCurrentBoard());
+document.querySelector("#playBtn").addEventListener("click", () => {
+  userInterface.onStartGameBtnClick();
+});
