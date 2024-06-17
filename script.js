@@ -123,7 +123,6 @@ const userInterface = (() => {
     // show the game section
     const GameScreenSection = document.querySelector("#GameScreen");
     GameScreenSection.classList.toggle("flex");
-
     GameScreenSection.classList.toggle("hidden");
 
     // run the first drawBoard call
