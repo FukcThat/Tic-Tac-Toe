@@ -120,7 +120,7 @@ const userInterface = (() => {
     const player2NameInput = document.querySelector("#p2NameInput");
 
     if (player1NameInput.value == "" && player2NameInput.value == "")
-      return window.alert("Can't you follow instructions? Silly ;)");
+      return window.alert("No name, no game.");
 
     // get the name inputs and set them to be the names of the respective players
     gameController.init(player1NameInput.value, player2NameInput.value);
@@ -140,6 +140,19 @@ const userInterface = (() => {
       col: null,
     });
   };
+
+  // const onHomeBtnClick = () => {
+  //   clearBoard();
+
+  //   const HomeScreenSection = document.querySelector("#HomeScreen");
+  //   HomeScreenSection.classList.remove("hidden");
+  //   HomeScreenSection.classList.toggle("flex");
+
+  //   const GameScreenSection = document.querySelector("#GameScreen");
+  //   GameScreenSection.classList.toggle("flex");
+  //   GameScreenSection.classList.toggle("hidden");
+  // };
+
   // Helper
 
   const createSVGElement = (svgString) => {
@@ -223,4 +236,8 @@ const userInterface = (() => {
 
 document.querySelector("#playBtn").addEventListener("click", () => {
   userInterface.onStartGameBtnClick();
+});
+
+document.querySelector("#homeBtn").addEventListener("click", () => {
+  userInterface.onHomeBtnClick();
 });

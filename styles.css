@@ -199,7 +199,16 @@ body {
 }
 
 #homeBtn {
+    height: 1rem;
+    width: 1rem;
     position: absolute;
     top: 1rem;
     left: 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+#homeBtn:hover {
+    scale: 1.1;
 }
