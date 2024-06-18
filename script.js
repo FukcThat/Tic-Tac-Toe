@@ -26,6 +26,8 @@ const gameBoard = (() => {
   return { getCurrentBoard, makeMove, printBoard };
 })();
 
+var array = [];
+
 const player = (name, marker) => {
   return { name, marker };
 };
@@ -40,14 +42,21 @@ const gameController = (() => {
     player1 = player(player1NameValue, "x");
     player2 = player(player2NameValue, "o");
     currentPlayer = player1;
+
+    let turnIndicator = document.querySelector("#turnIndicator");
+    turnIndicator.textContent = `It's ${currentPlayer.name}'s turn`;
   };
 
   const switchPlayer = () => {
     currentPlayer = currentPlayer === player1 ? player2 : player1;
+
+    console.log(currentPlayer);
+
+    let turnIndicator = document.querySelector("#turnIndicator");
+    turnIndicator.textContent = `It's ${currentPlayer.name}'s turn`;
   };
 
   const playRound = (row, col) => {
-    console.log(player1);
     if (currentPlayer == null) currentPlayer = player1;
     if (gameBoard.makeMove(row, col, currentPlayer.marker)) {
       lastClickedCell = { row: row, col: col };
@@ -55,15 +64,15 @@ const gameController = (() => {
       gameBoard.printBoard();
       userInterface.drawBoard(gameBoard.getCurrentBoard(), lastClickedCell);
       if (checkWinner(currentPlayer.marker)) {
-        console.log(`${currentPlayer.name} wins!`);
+        window.alert(`${currentPlayer.name} wins!`);
         return;
       } else if (checkTie()) {
-        console.log("Unpleasasnt. A Tie.");
+        window.alert("Unpleasasnt. A Tie.");
         return;
       }
       switchPlayer();
     } else {
-      console.log("That's illegal. Try again.");
+      window.alert("That's illegal. Try again.");
     }
   };
 

@@ -188,3 +188,18 @@ body {
 #playBtn:hover {
     font-size: 1.5rem;
 }
+
+#turnIndicator {
+    width: 100dvw;
+    position: absolute;
+    top: 5rem;
+    color: pink;
+    text-align: center;
+    font-size: 4rem;
+}
+
+#homeBtn {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+}
