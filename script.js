@@ -64,10 +64,29 @@ const gameController = (() => {
       gameBoard.printBoard();
       userInterface.drawBoard(gameBoard.getCurrentBoard(), lastClickedCell);
       if (checkWinner(currentPlayer.marker)) {
-        window.alert(`${currentPlayer.name} wins!`);
+        const WinnerText = document.querySelector("#winnerText");
+        WinnerText.textContent = `${currentPlayer.name} wins!`;
+
+        const EndGameScreenSection = document.querySelector("#endGameScreen");
+        EndGameScreenSection.classList.remove("hidden");
+        EndGameScreenSection.classList.toggle("flex");
+
+        const GameScreenSection = document.querySelector("#GameScreen");
+        GameScreenSection.classList.toggle("flex");
+        GameScreenSection.classList.toggle("hidden");
+
         return;
       } else if (checkTie()) {
-        window.alert("Unpleasasnt. A Tie.");
+        const WinnerText = document.querySelector("#winnerText");
+        WinnerText.textContent = `Neither of you managed to win!`;
+
+        const EndGameScreenSection = document.querySelector("#endGameScreen");
+        EndGameScreenSection.classList.remove("hidden");
+        EndGameScreenSection.classList.toggle("flex");
+
+        const GameScreenSection = document.querySelector("#GameScreen");
+        GameScreenSection.classList.toggle("flex");
+        GameScreenSection.classList.toggle("hidden");
         return;
       }
       switchPlayer();

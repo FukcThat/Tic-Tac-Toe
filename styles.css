@@ -212,3 +212,24 @@ body {
 #homeBtn:hover {
     scale: 1.1;
 }
+
+#endGameScreen {
+    margin-top: 25rem;
+    align-items: center;
+    flex-direction: column;
+    gap: 2rem;
+    font-size: 4rem;
+    color: pink;
+}
+
+.endGameBtn {
+    height: 3rem;
+    width: 15rem;
+    border: none;
+    border-radius: 1.5rem;
+    box-shadow: rgba(73, 20, 29, 0.5) 1px 2px 3px;
+    background-color: pink;
+    font-size: 1.25rem;
+    color: rgba(73, 20, 29);
+    cursor: pointer;
+}
