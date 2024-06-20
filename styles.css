@@ -233,3 +233,7 @@ body {
     color: rgba(73, 20, 29);
     cursor: pointer;
 }
+
+.endGameBtn:hover {
+    scale: 1.1;
+}

@@ -9,6 +9,14 @@ const gameBoard = (() => {
   //Make sure things can't get fucked when changing stuff
   const getCurrentBoard = () => board;
 
+  const restartBoard = () => {
+    board = [
+      [" ", " ", " "],
+      [" ", " ", " "],
+      [" ", " ", " "],
+    ];
+  };
+
   const makeMove = (row, col, playerMarker) => {
     if (board[row][col] === " ") {
       board[row][col] = playerMarker;
@@ -23,7 +31,7 @@ const gameBoard = (() => {
     });
   };
 
-  return { getCurrentBoard, makeMove, printBoard };
+  return { getCurrentBoard, makeMove, printBoard, restartBoard };
 })();
 
 var array = [];
@@ -41,6 +49,13 @@ const gameController = (() => {
   const init = (player1NameValue, player2NameValue) => {
     player1 = player(player1NameValue, "x");
     player2 = player(player2NameValue, "o");
+    currentPlayer = player1;
+
+    let turnIndicator = document.querySelector("#turnIndicator");
+    turnIndicator.textContent = `It's ${currentPlayer.name}'s turn`;
+  };
+
+  const rematchInit = () => {
     currentPlayer = player1;
 
     let turnIndicator = document.querySelector("#turnIndicator");
@@ -129,6 +144,7 @@ const gameController = (() => {
     checkTie,
     lastClickedCell,
     init,
+    rematchInit,
   };
 })();
 
@@ -160,17 +176,25 @@ const userInterface = (() => {
     });
   };
 
-  // const onHomeBtnClick = () => {
-  //   clearBoard();
+  const onRematchBtnClick = () => {
+    gameBoard.restartBoard();
 
-  //   const HomeScreenSection = document.querySelector("#HomeScreen");
-  //   HomeScreenSection.classList.remove("hidden");
-  //   HomeScreenSection.classList.toggle("flex");
+    const EndGameScreenSection = document.querySelector("#endGameScreen");
+    EndGameScreenSection.classList.add("hidden");
+    EndGameScreenSection.classList.toggle("flex");
 
-  //   const GameScreenSection = document.querySelector("#GameScreen");
-  //   GameScreenSection.classList.toggle("flex");
-  //   GameScreenSection.classList.toggle("hidden");
-  // };
+    // show the game section
+    const GameScreenSection = document.querySelector("#GameScreen");
+    GameScreenSection.classList.toggle("flex");
+    GameScreenSection.classList.toggle("hidden");
+
+    gameController.rematchInit();
+
+    drawBoard(gameBoard.getCurrentBoard(), {
+      row: null,
+      col: null,
+    });
+  };
 
   // Helper
 
@@ -250,7 +274,7 @@ const userInterface = (() => {
     });
   };
 
-  return { onStartGameBtnClick, drawBoard };
+  return { onStartGameBtnClick, onRematchBtnClick, drawBoard };
 })();
 
 document.querySelector("#playBtn").addEventListener("click", () => {
@@ -259,4 +283,8 @@ document.querySelector("#playBtn").addEventListener("click", () => {
 
 document.querySelector("#homeBtn").addEventListener("click", () => {
   userInterface.onHomeBtnClick();
+});
+
+document.querySelector("#rematchBtn").addEventListener("click", () => {
+  userInterface.onRematchBtnClick();
 });
